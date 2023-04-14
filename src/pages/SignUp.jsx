@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 import { toast } from "react-toastify";
 import {
   getAuth,
@@ -13,8 +14,9 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
   FormControl,
+  TextField,
   InputLabel,
-  Input,
+  OutlinedInput,
   InputAdornment,
   IconButton,
 } from "@mui/material";
@@ -81,32 +83,36 @@ export default function SignUp() {
 
         <form className="signInForm" onSubmit={onSubmit}>
           <FormControl sx={{ m: 1, width: "320px" }} variant="standard">
-            <InputLabel htmlFor="name">Name</InputLabel>
-            <Input
+            <TextField
               id="name"
               value={name}
               type="name"
               className="nameInput"
               label="Name"
+              aria-describedby="Please enter your name"
+              helperText={!name ? "Please enter your name" : ""}
               onChange={onChange}
             />
           </FormControl>
 
           <FormControl sx={{ m: 1, width: "320px" }} variant="standard">
-            <InputLabel htmlFor="email">Email</InputLabel>
-            <Input
+            <TextField
               id="email"
               value={email}
               type="email"
               className="emailInput"
               label="Email"
+              aria-describedby="Please enter your email address"
+              helperText={!email ? "Please enter your email address" : ""}
               onChange={onChange}
             />
           </FormControl>
 
-          <FormControl sx={{ m: 1, width: "320px" }} variant="standard">
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input
+          <FormControl sx={{ m: 1, width: "320px" }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">
+              Password
+            </InputLabel>
+            <OutlinedInput
               id="password"
               value={password}
               type={showPassword ? "text" : "password"}
@@ -124,6 +130,7 @@ export default function SignUp() {
                 </InputAdornment>
               }
               label="Password"
+              aria-describedby="Please enter your password"
               onChange={onChange}
             />
           </FormControl>
@@ -141,6 +148,8 @@ export default function SignUp() {
             </button>
           </div>
         </form>
+
+        <OAuth />
 
         <Link to="/profile" className="registerLink">
           Sign In

@@ -58,11 +58,11 @@ button {
   cursor: pointer;
   background: #5eafd7;
   border-radius: 1rem;
-  padding: 0.85rem 2rem;
+  padding: 12px 2px;
   color: #ffffff;
   font-weight: 600;
   font-size: 1.25rem;
-  width: 80%;
+  width: 50%;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -195,9 +195,19 @@ button {
   margin-bottom: 2rem;
 }
 
+.titleInput {
+  margin-bottom: 2rem;
+}
+
 .signInForm {
   display: grid;
   justify-content: center;
+}
+
+.createReviewForm {
+  display: grid;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .passwordInputDiv {
@@ -285,6 +295,7 @@ button {
   margin: 1.5rem;
   width: 3rem;
   height: 3rem;
+  color: #5eafd7;
   background-color: #ffffff;
   border-radius: 50%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
@@ -412,6 +423,7 @@ button {
   align-items: center;
   margin-bottom: 1rem;
   position: relative;
+  padding: 8px;
 }
 
 .categoryListingLink {
@@ -727,6 +739,7 @@ button {
 
 .formButtons {
   display: flex;
+  justify-content: center;
 }
 
 .formButton,
@@ -736,11 +749,11 @@ button {
 .formInputSmall,
 .formInputFile,
 .formButtonActive {
-  padding: 0.9rem 3rem;
+  padding: 12px 20px;
   background-color: #ffffff;
   font-weight: 600;
   border-radius: 1rem;
-  font-size: 1rem;
+  font-size: 16px;
   margin: 0.5rem 0.5rem 0 0;
   display: flex;
   justify-content: center;

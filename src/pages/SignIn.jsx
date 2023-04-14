@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import KeyboardArrowRightOutlinedIcon from "@mui/icons-material/KeyboardArrowRightOutlined";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import {
   FormControl,
+  TextField,
   InputLabel,
-  Input,
+  OutlinedInput,
   InputAdornment,
   IconButton,
 } from "@mui/material";
@@ -63,20 +65,21 @@ export default function SignIn() {
 
         <form className="signInForm" onSubmit={onSubmit}>
           <FormControl sx={{ m: 1, width: "320px" }} variant="standard">
-            <InputLabel htmlFor="email">Email</InputLabel>
-            <Input
+            <TextField
               id="email"
               value={email}
               type="email"
               className="emailInput"
+              helperText={!email ? "Please enter your email address" : ""}
               label="Email"
+              aria-describedby="Please enter your email address"
               onChange={onChange}
             />
           </FormControl>
 
-          <FormControl sx={{ m: 1, width: "320px" }} variant="standard">
+          <FormControl sx={{ m: 1, width: "320px" }} variant="outlined">
             <InputLabel htmlFor="password">Password</InputLabel>
-            <Input
+            <OutlinedInput
               id="password"
               value={password}
               type={showPassword ? "text" : "password"}
@@ -111,6 +114,8 @@ export default function SignIn() {
             </button>
           </div>
         </form>
+
+        <OAuth />
 
         <Link to="/sign-up" className="registerLink">
           Sign Up
