@@ -1,32 +1,26 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
-import { v4 as uuidv4 } from "uuid";
 import { FormControl, TextField, Typography, Rating } from "@mui/material";
 import Spinner from "../components/Spinner";
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 
 export default function CreateReview() {
   // eslint-disable-next-line
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [value, setValue] = useState(0);
   const [formData, setFormData] = useState({
+    userName: "",
     title: "",
     review: "",
     rating: Number(value),
     type: "product",
-    images: [],
   });
 
-  const { title, review, rating, type, images } = formData;
+  const { userName, title, review, rating, type } = formData;
 
   const auth = getAuth();
   const navigate = useNavigate();
@@ -54,15 +48,10 @@ export default function CreateReview() {
 
     if (e.target.value === "true") {
       boolean = true;
-    } else {
-      boolean = false;
     }
 
-    if (e.target.files) {
-      setFormData((prevState) => ({
-        ...prevState,
-        images: e.target.files,
-      }));
+    if (!e.target.value === "true") {
+      boolean = false;
     }
 
     if (!e.target.files) {
@@ -87,63 +76,22 @@ export default function CreateReview() {
 
     setLoading(true);
 
-    const storeImage = async (image) => {
-      console.log(image);
+    console.log(formData);
 
-      return new Promise((resolve, reject) => {
-        const storage = getStorage();
-        const fileName = `${auth.currentUser.uid}-${image.name}-${uuidv4()}`;
-
-        const storageRef = ref(storage, "images/" + fileName);
-
-        const uploadTask = uploadBytesResumable(storageRef, image);
-
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
-            switch (snapshot.state) {
-              case "paused":
-                console.log("Upload is paused");
-                break;
-              case "running":
-                console.log("Upload is running");
-                break;
-              default:
-                break;
-            }
-          },
-          (error) => {
-            reject(error);
-          },
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              resolve(downloadURL);
-            });
-          }
-        );
-      });
+    const formDataCopy = {
+      ...formData,
+      timestamp: serverTimestamp(),
     };
 
-    const imageUrls = await Promise.all(
-      [...images].map((image) => storeImage(image))
-    ).catch((error) => {
-      console.log(error);
-      setLoading(false);
-      toast.error("Images not uploaded");
-      return;
-    });
-
-    console.log(imageUrls);
+    const docRef = await addDoc(collection(db, "reviews"), formDataCopy);
+    setLoading(false);
+    toast.success("Review saved");
+    navigate(`/reviews/:${review.type}/${formDataCopy}/${docRef.id}`);
 
     setLoading(false);
   };
 
-  if (loading) {
-    return <Spinner />;
-  }
+  if (loading) return <Spinner />;
 
   return (
     <div className="profile">
@@ -213,10 +161,22 @@ export default function CreateReview() {
           />
           <FormControl sx={{ m: 1 }}>
             <TextField
-              required
+              id="userName"
+              value={userName}
+              type="userName"
+              label="Name"
+              helperText={!userName ? "Please write your name" : ""}
+              aria-describedby="Please write your name"
+              onChange={onMutate}
+            />
+          </FormControl>
+          <FormControl sx={{ m: 1 }}>
+            <TextField
               id="title"
               value={title}
               type="title"
+              helperText={!title ? "Please write your title of review" : ""}
+              aria-describedby="Please write your title of review"
               label="Title"
               onChange={onMutate}
             />
@@ -226,14 +186,16 @@ export default function CreateReview() {
               id="review"
               value={review}
               type="review"
-              label="Description"
+              label="Review"
+              helperText={!review ? "Please write your review" : ""}
+              aria-describedby="Please write your review"
               multiline
               rows={8}
               onChange={onMutate}
             />
           </FormControl>
 
-          <Typography
+          {/* <Typography
             variant="subtitle1"
             mt={2}
             style={{
@@ -243,9 +205,9 @@ export default function CreateReview() {
           >
             <ArrowRightOutlinedIcon />
             Images (Images will be cover max 6.)
-          </Typography>
+          </Typography> */}
 
-          <input
+          {/* <input
             className="formInputFile"
             type="file"
             id="images"
@@ -254,7 +216,7 @@ export default function CreateReview() {
             accept=".jpg,.png,.jpeg"
             multiple
             required
-          />
+          /> */}
           <button type="submit" className="primaryButton createListingButton">
             Create Review
           </button>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import ExploreOutlinedIcon from "@mui/icons-material/ExploreOutlined";
-import HistoryOutlinedIcon from "@mui/icons-material/HistoryOutlined";
+import BusinessIcon from "@mui/icons-material/Business";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 
 export default function Navbar() {
@@ -33,19 +33,19 @@ export default function Navbar() {
               Explore
             </p>
           </li>
-          <li className="navbarListItem" onClick={() => navigate("/recents")}>
-            <HistoryOutlinedIcon
-              color={pathMatchRoute("/recents") ? "#2c2c2c" : "disabled"}
+          <li className="navbarListItem" onClick={() => navigate("/about-us")}>
+            <BusinessIcon
+              color={pathMatchRoute("/about-us") ? "#2c2c2c" : "disabled"}
               sx={{ width: "32px", height: "32px" }}
             />
             <p
               className={
-                pathMatchRoute("/recents")
+                pathMatchRoute("/about-us")
                   ? "navbarListItemNameActive"
                   : "navbarListItemName"
               }
             >
-              Resent
+              About Us
             </p>
           </li>
           <li className="navbarListItem" onClick={() => navigate("/profile")}>
