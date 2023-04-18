@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { db } from "../firebase.config";
 import { collection, getDocs } from "firebase/firestore";
 import Card from "@mui/material/Card";
@@ -6,6 +5,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { useEffect, useState } from "react";
 
 export default function AboutUs() {
   const [offices, setOffices] = useState([]);
