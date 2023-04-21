@@ -207,7 +207,7 @@ button {
 .createReviewForm {
   display: grid;
   justify-content: center;
-  margin-top: 20px;
+  padding: 0 20px;
 }
 
 .passwordInputDiv {
@@ -745,10 +745,8 @@ button {
 
 .formButton,
 .formInput,
-.formInputAddress,
-.formInputName,
-.formInputSmall,
 .formInputFile,
+.formInputSmall,
 .formButtonActive {
   padding: 12px 20px;
   background-color: #ffffff;
@@ -756,13 +754,14 @@ button {
   border-radius: 1rem;
   font-size: 16px;
   margin: 0.5rem 0.5rem 0 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 .formButtonActive {
   background-color: #5eafd7;
   color: #ffffff;
+}
+
+.formInputSmall {
+  width: 24%;
 }
 
 .flex {
@@ -770,8 +769,6 @@ button {
 }
 
 .formInput,
-.formInputAddress,
-.formInputName,
 .formInputSmall,
 .formInputFile {
   border: none;
@@ -780,21 +777,13 @@ button {
 }
 .formInputSmall,
 .formInputFile {
-  margin-right: 3rem;
   padding: 0.9rem 0.7rem;
   text-align: center;
 }
 
-.formInputName {
+.formInput {
   padding: 0.9rem 1rem;
-  width: 90%;
-  max-width: 326px;
-}
-
-.formInputAddress {
-  padding: 0.9rem 1rem;
-  width: 90%;
-  max-width: 326px;
+  width: 100%;
 }
 
 .formPriceDiv {
@@ -808,6 +797,11 @@ button {
 }
 
 .imagesInfo {
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+.ratingInfo {
   font-size: 0.9rem;
   opacity: 0.75;
 }
