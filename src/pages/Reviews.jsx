@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   collection,
   getDocs,
@@ -12,11 +12,12 @@ import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 import Review from "../components/Review";
+import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
 
 export default function Reviews() {
   const [reviews, setReviews] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   const params = useParams();
 
   useEffect(() => {
@@ -55,9 +56,14 @@ export default function Reviews() {
     <div className="category">
       <header>
         <p className="pageHeader">
-          {params.reviewType === "product" ? "About Products" : "About CS"}
+          {params.reviewType === "product"
+            ? "About Product"
+            : "About Customer Service"}
         </p>
       </header>
+      <button className="back" onClick={() => navigate("/")}>
+        <KeyboardArrowLeftOutlinedIcon /> Back
+      </button>
 
       {loading ? (
         <Spinner />
@@ -72,7 +78,9 @@ export default function Reviews() {
           </main>
         </>
       ) : (
-        <p>No Reviews for {params.reviewType}</p>
+        <p style={{ textAlign: "center", fontWeight: "600" }}>
+          No Reviews yet!
+        </p>
       )}
     </div>
   );

@@ -66,9 +66,10 @@ export default function Review({ review, id, onDelete }) {
             >
               <Grid item>
                 <Typography fontSize="14px" fontWeight={600}>
-                  {review.userRef === auth.currentUser.uid
-                    ? auth.currentUser.displayName
-                    : review.userName}
+                  {(review.userRef === auth.currentUser.uid &&
+                    auth.currentUser.displayName) ||
+                    review.userName ||
+                    "User"}
                 </Typography>
               </Grid>
               <Grid item>

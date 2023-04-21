@@ -13,11 +13,19 @@ export default function Explore() {
         <p className="exploreCategoryHeading">Categories</p>
         <div className="exploreCategories">
           <Link to="/reviews/product">
-            <img src={products} alt="product" className="exploreCategoryImg" />
+            <img
+              src={products}
+              alt="link to reviews about product"
+              className="exploreCategoryImg"
+            />
             <p className="exploreCategoryName">Products</p>
           </Link>
-          <Link to="/reviews/cs">
-            <img src={cs} alt="cs" className="exploreCategoryImg" />
+          <Link to="/reviews/customer-service">
+            <img
+              src={cs}
+              alt="link to reviews about customer service"
+              className="exploreCategoryImg"
+            />
             <p className="exploreCategoryName">Customer Service</p>
           </Link>
         </div>

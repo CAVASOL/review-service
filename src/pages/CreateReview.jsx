@@ -7,6 +7,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { v4 } from "uuid";
 import Spinner from "../components/Spinner";
+import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
 
 export default function CreateReview() {
   const [loading, setLoading] = useState(false);
@@ -132,8 +133,13 @@ export default function CreateReview() {
       <header>
         <p className="pageHeader">Create a Review</p>
       </header>
+      <button className="back" onClick={() => navigate("/profile")}>
+        <KeyboardArrowLeftOutlinedIcon /> Back
+      </button>
+
       <main>
         <form className="createReviewForm" onSubmit={onSubmit}>
+          <label className="formLabel">Review about</label>
           <div className="formButtons">
             <button
               type="button"
@@ -146,9 +152,11 @@ export default function CreateReview() {
             </button>
             <button
               type="button"
-              className={type === "cs" ? "formButtonActive" : "formButton"}
+              className={
+                type === "customer-service" ? "formButtonActive" : "formButton"
+              }
               id="type"
-              value="cs"
+              value="customer-service"
               onClick={onMutate}
             >
               Customer Service

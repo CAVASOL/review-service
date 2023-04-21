@@ -94,7 +94,7 @@ export default function Profile() {
 
           <Link to="/create-review" className="createListing">
             <DriveFileRenameOutlineOutlinedIcon />
-            <p>Leave your reviews</p>
+            <p>Create a Review</p>
             <KeyboardArrowRightIcon />
           </Link>
         </main>

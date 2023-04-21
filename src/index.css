@@ -137,7 +137,7 @@ button {
 }
 
 .pageHeader {
-  font-size: 2rem;
+  font-size: 24px;
   font-weight: 800;
   text-align: center;
 }
@@ -411,6 +411,7 @@ button {
 
 .category {
   margin-bottom: 10rem;
+  padding: 0 8px;
 }
 
 .categoryListings {
@@ -650,6 +651,19 @@ button {
   background-color: #5eafd7;
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
+}
+
+.back {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: black;
+  background-color: unset;
+  padding: 0.25rem 0.75rem;
+  margin-bottom: 20px;
 }
 
 .profileDetailsHeader {
