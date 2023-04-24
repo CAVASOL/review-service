@@ -62,7 +62,6 @@ export default function SignIn() {
         <header>
           <p className="pageHeader">Welcome Back!</p>
         </header>
-
         <form className="signInForm" onSubmit={onSubmit}>
           <FormControl sx={{ m: 1, width: "320px" }} variant="standard">
             <TextField
@@ -76,7 +75,6 @@ export default function SignIn() {
               onChange={onChange}
             />
           </FormControl>
-
           <FormControl sx={{ m: 1, width: "320px" }} variant="outlined">
             <InputLabel htmlFor="password">Password</InputLabel>
             <OutlinedInput
@@ -100,11 +98,9 @@ export default function SignIn() {
               onChange={onChange}
             />
           </FormControl>
-
           <Link to="/forgot-password" className="forgotPasswordLink">
             Forgot Password
           </Link>
-
           <div className="signInBar">
             <p className="signInText">Sign In</p>
             <button className="signInBtn">
@@ -114,9 +110,7 @@ export default function SignIn() {
             </button>
           </div>
         </form>
-
         <OAuth />
-
         <Link to="/sign-up" className="registerLink">
           Sign Up
         </Link>

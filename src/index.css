@@ -76,11 +76,19 @@ button {
   right: -2%;
 }
 
-.editIcon {
+.listingTitleDelete {
   cursor: pointer;
-  position: absolute;
-  top: -3.4%;
-  right: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editDelete {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: right;
 }
 
 .pageContainer,
@@ -354,14 +362,14 @@ button {
 }
 
 .swiperSlideText {
-  color: #ffffff;
+  color: black;
   position: absolute;
-  top: 70px;
+  top: 0;
   left: 0;
   font-weight: 600;
   max-width: 90%;
-  font-size: 1.25rem;
-  background-color: rgba(0, 0, 0, 0.8);
+  font-size: "16px";
+  background-color: rgba(255, 255, 255, 0.8);
   padding: 0.5rem;
 }
 @media (min-width: 1024px) {
@@ -419,13 +427,15 @@ button {
 }
 
 .categoryListing {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-top: 8px;
-  margin-bottom: 8px;
-  position: relative;
+  display: inline;
   padding: 8px;
+}
+
+.reviewDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
 }
 
 .categoryListingLink {
@@ -446,8 +456,8 @@ button {
 }
 
 .categoryListingDetails {
-  width: 60%;
   display: inline;
+  align-items: center;
 }
 @media (min-width: 1024px) {
   .categoryListingDetails {
@@ -509,11 +519,8 @@ button {
   margin-bottom: 10rem;
 }
 
-.shareIconDiv {
+.shareBtn {
   cursor: pointer;
-  position: fixed;
-  top: 3%;
-  right: 5%;
   z-index: 2;
   background-color: #ffffff;
   border-radius: 50%;
@@ -586,7 +593,7 @@ button {
 
 .linkCopied {
   position: fixed;
-  top: 9%;
+  top: 3%;
   right: 5%;
   z-index: 2;
   background-color: #ffffff;
@@ -655,6 +662,7 @@ button {
 
 .back {
   display: flex;
+  justify-content: center;
   align-items: center;
   cursor: pointer;
   font-family: "Montserrat", sans-serif;
@@ -663,6 +671,13 @@ button {
   color: black;
   background-color: unset;
   padding: 0.25rem 0.75rem;
+}
+
+.SingleReviewBtns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
   margin-bottom: 20px;
 }
 

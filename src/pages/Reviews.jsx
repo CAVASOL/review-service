@@ -7,6 +7,7 @@ import {
   where,
   orderBy,
   limit,
+  startAfter,
 } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
@@ -17,6 +18,7 @@ import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeft
 export default function Reviews() {
   const [reviews, setReviews] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [lastFetched, setLastFetched] = useState(null);
   const navigate = useNavigate();
   const params = useParams();
 
@@ -28,11 +30,12 @@ export default function Reviews() {
           reviewsRef,
           where("type", "==", params.reviewType),
           orderBy("timestamp", "desc"),
-          limit(10)
+          limit(2)
         );
 
         const querySnap = await getDocs(q);
-
+        const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+        setLastFetched(lastVisible);
         const reviews = [];
 
         querySnap.forEach((doc) => {
@@ -52,6 +55,36 @@ export default function Reviews() {
     fetchReviews();
   }, [params.reviewType]);
 
+  const fetchMoreReviews = async () => {
+    try {
+      const reviewsRef = collection(db, "reviews");
+      const q = query(
+        reviewsRef,
+        where("type", "==", params.reviewType),
+        orderBy("timestamp", "desc"),
+        startAfter(lastFetched),
+        limit(10)
+      );
+
+      const querySnap = await getDocs(q);
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1];
+      setLastFetched(lastVisible);
+      const reviews = [];
+
+      querySnap.forEach((doc) => {
+        return reviews.push({
+          id: doc.id,
+          data: doc.data(),
+        });
+      });
+
+      setReviews((prev) => [...prev, ...reviews]);
+      setLoading(false);
+    } catch (error) {
+      toast.error("Could not fetch reviews.");
+    }
+  };
+
   return (
     <div className="category">
       <header>
@@ -64,7 +97,6 @@ export default function Reviews() {
       <button className="back" onClick={() => navigate("/")}>
         <KeyboardArrowLeftOutlinedIcon /> Back
       </button>
-
       {loading ? (
         <Spinner />
       ) : reviews && reviews.length > 0 ? (
@@ -76,6 +108,11 @@ export default function Reviews() {
               ))}
             </ul>
           </main>
+          {lastFetched && (
+            <p className="loadMore" onClick={fetchMoreReviews}>
+              Load More
+            </p>
+          )}
         </>
       ) : (
         <p style={{ textAlign: "center", fontWeight: "600" }}>

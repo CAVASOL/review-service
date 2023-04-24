@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Slider from "../components/Slider";
 import cs from "../assets/cs.jpg";
 import products from "../assets/products.jpg";
 
@@ -8,8 +9,8 @@ export default function Explore() {
       <header>
         <p className="pageHeader">Explore</p>
       </header>
-
       <main>
+        <Slider />
         <p className="exploreCategoryHeading">Categories</p>
         <div className="exploreCategories">
           <Link to="/reviews/product">

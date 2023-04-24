@@ -1,19 +1,21 @@
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { storage, db } from "../firebase.config";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { v4 } from "uuid";
 import Spinner from "../components/Spinner";
 import KeyboardArrowLeftOutlinedIcon from "@mui/icons-material/KeyboardArrowLeftOutlined";
 
-export default function CreateReview() {
+export default function EditReview() {
   // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
+  const [revieww, setRevieww] = useState(false);
   const auth = getAuth();
   const navigate = useNavigate();
+  const params = useParams();
   const isMounted = useRef(true);
   const [formData, setFormData] = useState({
     title: "",
@@ -25,6 +27,34 @@ export default function CreateReview() {
   });
 
   const { title, userName, type, rating, review, images } = formData;
+
+  useEffect(() => {
+    if (revieww && revieww.userRef !== auth.currentUser.uid) {
+      toast.error("You are not authorized to edit this review!");
+      navigate("/");
+    }
+  }, [auth.currentUser.uid, revieww, navigate]);
+
+  useEffect(() => {
+    setLoading(true);
+    const getReview = async () => {
+      const reviewDocRef = doc(db, "reviews", params.reviewId);
+      const reviewDocSnap = await getDoc(reviewDocRef);
+      const reviewData = reviewDocSnap.data();
+      if (reviewDocSnap.exists()) {
+        setRevieww(reviewData);
+        setFormData({
+          ...reviewDocSnap.data(),
+        });
+        setLoading(false);
+      } else {
+        navigate("/");
+        toast.error("No such review exists!");
+      }
+    };
+
+    getReview();
+  }, [params.reviewId, navigate]);
 
   useEffect(() => {
     if (isMounted) {
@@ -87,10 +117,11 @@ export default function CreateReview() {
     };
 
     delete reviewData.images;
-    const reviewDocRef = await addDoc(collection(db, "reviews"), reviewData);
 
+    const reviewDocRef = doc(db, "reviews", params.reviewId);
+    await updateDoc(reviewDocRef, reviewData);
     setLoading(false);
-    toast.success("Review created successfully!");
+    toast.success("Review saved successfully!");
     navigate(`/reviews/${reviewData.type}/${reviewDocRef.id}`);
   };
 
@@ -128,7 +159,7 @@ export default function CreateReview() {
   return (
     <div className="profile">
       <header>
-        <p className="pageHeader">Create a Review</p>
+        <p className="pageHeader">Edit Review</p>
       </header>
       <button className="back" onClick={() => navigate("/profile")}>
         <KeyboardArrowLeftOutlinedIcon /> Back

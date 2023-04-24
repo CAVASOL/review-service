@@ -1,15 +1,28 @@
 import { getAuth, updateProfile } from "firebase/auth";
-import { useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
+import { useState, useEffect } from "react";
+import {
+  doc,
+  updateDoc,
+  deleteDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+  orderBy,
+} from "firebase/firestore";
 import { db } from "../firebase.config";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import DriveFileRenameOutlineOutlinedIcon from "@mui/icons-material/DriveFileRenameOutlineOutlined";
+import Spinner from "../components/Spinner";
+import Review from "../components/Review";
 
 export default function Profile() {
   const auth = getAuth();
   const [changeDetails, setChangeDetails] = useState(false);
+  const [reviews, setReviews] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: auth.currentUser.displayName,
     email: auth.currentUser.email,
@@ -17,6 +30,28 @@ export default function Profile() {
 
   const { name, email } = formData;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserReviews = async () => {
+      const q = query(
+        collection(db, "reviews"),
+        where("userRef", "==", auth.currentUser.uid),
+        orderBy("timestamp", "desc")
+      );
+      const querySnapshot = await getDocs(q);
+
+      const reviews = [];
+      querySnapshot.forEach((doc) => {
+        return reviews.push({ id: doc.id, data: doc.data() });
+      });
+
+      setReviews(reviews);
+      setLoading(false);
+    };
+
+    fetchUserReviews();
+  }, [auth.currentUser.uid]);
+
   const onLogout = () => {
     auth.signOut();
     navigate("/");
@@ -45,6 +80,20 @@ export default function Profile() {
     }));
   };
 
+  const onEdit = (reviewId) => navigate(`/edit-review/${reviewId}`);
+  const onDelete = async (reviewId) => {
+    if (window.confirm("Are you sure you want to delete this review?")) {
+      await deleteDoc(doc(db, "reviews", reviewId));
+      const newReviews = reviews.filter((review) => review.id !== reviewId);
+      setReviews(newReviews);
+      toast.success("Review deleted successfully");
+    }
+  };
+
+  if (loading) {
+    <Spinner />;
+  }
+
   return (
     <>
       <div className="profile">
@@ -54,7 +103,6 @@ export default function Profile() {
             Logout
           </button>
         </header>
-
         <main>
           <div className="profileDetailsHeader">
             <p className="profileDetailsText">Profile Details</p>
@@ -68,7 +116,6 @@ export default function Profile() {
               {changeDetails ? "done" : "change"}
             </p>
           </div>
-
           <div className="profileCard">
             <form>
               <input
@@ -91,12 +138,27 @@ export default function Profile() {
               />
             </form>
           </div>
-
           <Link to="/create-review" className="createListing">
             <DriveFileRenameOutlineOutlinedIcon />
             <p>Create a Review</p>
             <KeyboardArrowRightIcon />
           </Link>
+          {!loading && reviews?.length > 0 && (
+            <>
+              <p className="listingText">My Reviews</p>
+              <ul style={{ padding: "0 20px" }}>
+                {reviews.map((review) => (
+                  <Review
+                    key={review.id}
+                    review={review.data}
+                    id={review.id}
+                    onEdit={() => onEdit(review.id)}
+                    onDelete={() => onDelete(review.id)}
+                  />
+                ))}
+              </ul>
+            </>
+          )}
         </main>
       </div>
     </>

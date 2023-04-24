@@ -28,7 +28,6 @@ export default function ForgotPassword() {
       <header>
         <p className="pageHeader">Forgot Password</p>
       </header>
-
       <main>
         <form className="signInForm" onSubmit={onSubmit}>
           <FormControl sx={{ m: 1, width: "320px" }} variant="standard">
@@ -44,7 +43,6 @@ export default function ForgotPassword() {
             <Link className="forgotPasswordLink" to="/sign-in">
               Sign In
             </Link>
-
             <div className="signInBar">
               <div className="signInText">Send Reset Link</div>
               <button className="signInBtn">
